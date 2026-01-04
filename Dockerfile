@@ -1,25 +1,26 @@
 # Use Eclipse Temurin 17 as base image (replacement for deprecated openjdk)
 FROM eclipse-temurin:17-jdk
 
+# Install Maven
+RUN apt-get update && \
+    apt-get install -y maven && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
 # Set working directory
 WORKDIR /app
-
-# Copy Maven wrapper files
-COPY mvnw .
-COPY .mvn .mvn
-RUN chmod +x mvnw
 
 # Copy pom.xml first (for dependency caching)
 COPY pom.xml .
 
 # Download dependencies (this layer will be cached if pom.xml doesn't change)
-RUN ./mvnw dependency:go-offline -B
+RUN mvn dependency:go-offline -B
 
 # Copy source code
 COPY src ./src
 
 # Build the application
-RUN ./mvnw clean package -DskipTests -B
+RUN mvn clean package -DskipTests -B
 
 # Expose port (Render will set PORT env var)
 EXPOSE 8080
