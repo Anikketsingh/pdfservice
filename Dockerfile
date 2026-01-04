@@ -19,6 +19,9 @@ RUN mvn dependency:go-offline -B
 # Copy source code
 COPY src ./src
 
+# Copy image files needed at runtime (sbi2.jpg is loaded from filesystem)
+COPY sbi2.jpg ./sbi2.jpg
+
 # Build the application
 RUN mvn clean package -DskipTests -B
 
