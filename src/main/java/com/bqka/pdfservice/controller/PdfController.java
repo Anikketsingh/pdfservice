@@ -12,11 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins = {
-    "http://192.168.1.5:8081",
-    "http://localhost:8081",
-    "http://localhost:8082"
-})
+@CrossOrigin(origins = "*")
 public class PdfController {
 
   @PostMapping("/pdf")
